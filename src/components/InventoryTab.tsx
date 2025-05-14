@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -8,6 +10,8 @@ import {
 } from "@/components/ui/table";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";
+import { Combobox } from "./ui/combobox";
+import { useState } from "react";
 
 const plantas = [
   {
@@ -20,6 +24,8 @@ const plantas = [
 ];
 
 export default function InventoryTab() {
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   return (
     <div className="w-full">
       <div className="flex items-center gap-2 py-2">
@@ -27,6 +33,10 @@ export default function InventoryTab() {
           <Input placeholder="Buscar" className="pl-10" />
 
           <Search className="absolute h-4 w-4 left-3 top-1/2 transform -translate-y-1/2" />
+          <Combobox
+            value={selectedCategory}
+            onChange={(val) => setSelectedCategory(val)}
+          />
         </div>
       </div>
 
@@ -36,7 +46,8 @@ export default function InventoryTab() {
             <TableHead>Planta Id</TableHead>
             <TableHead>Nombre</TableHead>
             <TableHead>Categoria</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="text-right">Precio</TableHead>
+            <TableHead>Stock</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
