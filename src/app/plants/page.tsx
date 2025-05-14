@@ -1,4 +1,4 @@
-import InventoryTab from "@/components/inventoryTab";
+import InventoryTab from "@/components/InventoryTab";
 import { stackServerApp } from "@/stack";
 import { SignUp } from "@stackframe/stack";
 import React from "react";
