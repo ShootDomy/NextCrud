@@ -4,20 +4,31 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    // url      = env("DATABASE_URL")
-    url      = "postgresql://postgres:admin@localhost:5432/nextcrud?schema=public"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id         String    @id @default(cuid())
+    nombre     String
+    email      String    @unique
+    password   String
+    plants     Plant[]
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
 }
 
 model Plant {
-    id          String   @id @default(cuid())
+    id          String    @id @default(cuid())
     nombre      String
     descripcion String?
     categoria   String?
     stock       Int
     precio      Float
-    userId      String?
-    imagenUrl   String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    // deletedAt DateTime @deletedAt
+    user_id     String?
+    imagen_url  String?
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @updatedAt
+    deleted_at  DateTime?
+    user        User?     @relation(fields: [user_id], references: [id])
 }

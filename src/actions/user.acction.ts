@@ -1,32 +1,74 @@
 "use server";
 
-import { stackServerApp } from "@/stack";
-import { neon } from "@neondatabase/serverless";
+import prisma from "@/lib/prisma";
 
-export async function getUserDetails(userId: string | undefined) {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL is not set");
-  }
-
-  if (!userId) {
-    return null;
-  }
-
-  const sql = neon(process.env.DATABASE_URL!);
-  const [user] =
-    await sql`SELECT * FROM neon_auth.users_sync WHERE id = ${userId};`;
-  return user;
+/**
+ * Crear usuario
+ *  * @param data
+ * @returns
+ */
+export async function createUser({
+  nombre,
+  email,
+  password,
+}: {
+  nombre: string;
+  email: string;
+  password: string;
+}) {
+  return await prisma.user.create({
+    data: { nombre, email, password },
+  });
 }
 
-export async function getUserId() {
-  try {
-    const user = await stackServerApp.getUser();
-    const userId = user?.id;
+/**
+ * Obterer todos los usuarios activos
+ * @returns
+ */
+export async function getAllUsers() {
+  return await prisma.user.findMany({
+    where: { deleted_at: null },
+    include: { plants: true },
+  });
+}
 
-    if (!userId) return;
+/**
+ * ACtualizar usuario
+ * @param userId
+ * @param data
+ * @returns
+ */
+export async function updateUser(
+  userId: string,
+  data: { nombre?: string; email?: string; password?: string }
+) {
+  return await prisma.user.update({
+    where: { id: userId },
+    data,
+  });
+}
 
-    return userId;
-  } catch (error) {
-    console.log("Error==>>>", error);
-  }
+/**
+ * Eliminar usuario
+ * @param userId
+ * @returns
+ */
+export async function softDeleteUser(userId: string) {
+  return await prisma.user.update({
+    where: { id: userId },
+    data: { deleted_at: new Date() },
+  });
+}
+
+/**
+ *
+ * @param userId
+ * @returns
+ */
+export async function getUserDetails(userId: string | undefined) {
+  if (!userId) return null;
+  return await prisma.user.findUnique({
+    where: { id: userId, deleted_at: null },
+    include: { plants: true },
+  });
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { HomeIcon, LogInIcon, LogOutIcon, Sprout } from "lucide-react";
-import { ModeToggle } from "./ModeTaoggle";
+import { ModeToggle } from "./ModeToggle";
 // import { stackServerApp } from "@/stack";
 
 async function Navbar() {

@@ -7,14 +7,38 @@ const AuthForm: React.FC = () => {
   const [mode, setMode] = useState<AuthMode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // Solo para registro
+  const [name, setName] = useState("");
+  const [mensaje, setMensaje] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMensaje("");
+
     if (mode === "login") {
       alert(`Login con: ${email} / ${password}`);
     } else {
-      alert(`Registro con: ${name} / ${email} / ${password}`);
+      try {
+        const response = await fetch("/api/user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: name, email, password }),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Usuario registrado correctamente");
+          setName("");
+          setEmail("");
+          setPassword("");
+          setMode("login");
+        } else {
+          setMensaje(data.error || "Error al registrar usuario");
+        }
+      } catch (error) {
+        console.error("Error al crear usuario:", error);
+        alert("Error de red o servidor");
+        setMensaje("Error de red o servidor");
+      }
     }
   };
 
@@ -78,6 +102,9 @@ const AuthForm: React.FC = () => {
           ? "¿No tienes cuenta? Regístrate"
           : "¿Ya tienes cuenta? Inicia sesión"}
       </button>
+      {mensaje && (
+        <div className="text-center mt-2 text-sm text-red-500">{mensaje}</div>
+      )}
     </div>
   );
 };
