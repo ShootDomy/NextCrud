@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 type AuthMode = "login" | "register";
 
@@ -15,7 +16,17 @@ const AuthForm: React.FC = () => {
     setMensaje("");
 
     if (mode === "login") {
-      alert(`Login con: ${email} / ${password}`);
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (res?.ok) {
+        alert("Inicio de sesión exitoso");
+      } else {
+        setMensaje("Credenciales incorrectas");
+      }
     } else {
       try {
         const response = await fetch("/api/user", {
@@ -35,9 +46,9 @@ const AuthForm: React.FC = () => {
           setMensaje(data.error || "Error al registrar usuario");
         }
       } catch (error) {
-        console.error("Error al crear usuario:", error);
-        alert("Error de red o servidor");
-        setMensaje("Error de red o servidor");
+        console.error("Error al registrar usuario:", error);
+        alert("Error al registrar usuario");
+        setMensaje("Error al registrar usuario");
       }
     }
   };

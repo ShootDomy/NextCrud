@@ -7,18 +7,18 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model User {
+model user {
     id         String    @id @default(cuid())
     nombre     String
     email      String    @unique
     password   String
-    plants     Plant[]
+    plants     plant[]
     created_at DateTime  @default(now())
     updated_at DateTime  @updatedAt
     deleted_at DateTime?
 }
 
-model Plant {
+model plant {
     id          String    @id @default(cuid())
     nombre      String
     descripcion String?
@@ -30,5 +30,5 @@ model Plant {
     created_at  DateTime  @default(now())
     updated_at  DateTime  @updatedAt
     deleted_at  DateTime?
-    user        User?     @relation(fields: [user_id], references: [id])
+    user        user?     @relation(fields: [user_id], references: [id])
 }

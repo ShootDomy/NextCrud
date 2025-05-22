@@ -1,5 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { createUser } from "@/actions/user.acction";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,12 +11,14 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const user = await prisma.user.create({
-      data: { nombre, email, password },
-    });
+
+    const encriptar = await bcrypt.hash(password, 10);
+
+    const user = await createUser({ nombre, email, password: encriptar });
     return NextResponse.json(user, { status: 201 });
   } catch (error) {
     console.error("Error al crear usuario:", error);
+
     return NextResponse.json(
       { error: "Error al crear usuario" },
       { status: 500 }

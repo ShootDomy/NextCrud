@@ -21,6 +21,14 @@ export async function createUser({
   });
 }
 
+export async function loginUser(email: string) {
+  return await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+}
+
 /**
  * Obterer todos los usuarios activos
  * @returns
