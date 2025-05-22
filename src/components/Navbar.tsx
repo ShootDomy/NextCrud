@@ -1,13 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { HomeIcon, LogInIcon, LogOutIcon, Sprout } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
+import { useSession, signIn, signOut } from "next-auth/react";
 // import { stackServerApp } from "@/stack";
 
-async function Navbar() {
+function Navbar() {
   // const user = await stackServerApp.getUser();
   // const app = stackServerApp.urls;
   // const userProfile = await getUserDetails(user?.id);
+  const { data: session } = useSession();
 
   return (
     <nav className="sticky top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
@@ -22,14 +26,6 @@ async function Navbar() {
               🌱 Inventario
             </Link>
           </div>
-
-          {/*Navbar components*/}
-          {/* 
-          {userProfile?.name && (
-            <span className="text-[14px] text-gray-600 dark:text-gray-300">
-              {`Hello, ${userProfile?.name.split(" ")[0]}`}
-            </span>
-          )} */}
 
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" className="flex items-center gap-2" asChild>
@@ -48,36 +44,31 @@ async function Navbar() {
 
             {/*Tema*/}
             <ModeToggle />
-
-            {/* {user ? (
-              <>/
+            {session?.user ? (
+              <>
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                  {session.user.nombre}
+                </span>
                 <Button
                   variant="secondary"
                   className="flex items-center gap-2"
-                  asChild
+                  onClick={() => signOut({ callbackUrl: "/login" })}
                 >
-                  <Link href={app.signOut}>
-                    <LogOutIcon className="w-4 h-4" />
-                    <span className="hidden lg:inline">Cerrar Sesión</span>
-                  </Link>
+                  <LogOutIcon className="w-4 h-4" />
+                  <span className="hidden lg:inline">Cerrar Sesión</span>
                 </Button>
-
-                <UserButton />
+                {/* Puedes mostrar el nombre del usuario si quieres */}
               </>
             ) : (
-              <>
-                <Button
-                  variant="ghost"
-                  className="flex items-center gap-2"
-                  asChild
-                >
-                  <Link href={app.signIn}>
-                    <LogInIcon className="w-4 h-4" />
-                    <span className="hidden lg:inline">Inicio Sesión</span>
-                  </Link>
-                </Button>
-              </>
-            )} */}
+              <Button
+                variant="ghost"
+                className="flex items-center gap-2"
+                onClick={() => signIn(undefined, { callbackUrl: "/login" })}
+              >
+                <LogInIcon className="w-4 h-4" />
+                <span className="hidden lg:inline">Inicio Sesión</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
