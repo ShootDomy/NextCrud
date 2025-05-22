@@ -19,52 +19,58 @@ const AuthForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 p-8 bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold text-center mb-6 text-blue-700">
+    <div className="max-w-md mx-auto mt-12 p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg transition-colors">
+      <h2 className="text-2xl font-bold text-center mb-6 text-blue-700 dark:text-blue-300">
         {mode === "login" ? "Iniciar Sesión" : "Registrarse"}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         {mode === "register" && (
           <div>
-            <label className="block mb-1 text-gray-700">Nombre:</label>
+            <label className="block mb-1 text-gray-700 dark:text-gray-200">
+              Nombre:
+            </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
           </div>
         )}
         <div>
-          <label className="block mb-1 text-gray-700">Email:</label>
+          <label className="block mb-1 text-gray-700 dark:text-gray-200">
+            Email:
+          </label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div>
-          <label className="block mb-1 text-gray-700">Contraseña:</label>
+          <label className="block mb-1 text-gray-700 dark:text-gray-200">
+            Contraseña:
+          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
         </div>
         <button
           type="submit"
-          className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+          className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition"
         >
           {mode === "login" ? "Entrar" : "Registrarse"}
         </button>
       </form>
       <button
-        className="mt-4 w-full text-blue-600 hover:underline"
+        className="mt-4 w-full text-blue-600 dark:text-blue-300 hover:underline"
         type="button"
         onClick={() => setMode(mode === "login" ? "register" : "login")}
       >
