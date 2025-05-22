@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackServerApp } from "../stack";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,20 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <StackProvider app={stackServerApp}>
-         
-        </StackProvider> */}
-        <StackTheme>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          ></ThemeProvider>
+        <ThemeProvider>
           <Navbar />
           {children}
           <h1>Footer</h1>
-        </StackTheme>
+        </ThemeProvider>
       </body>
     </html>
   );

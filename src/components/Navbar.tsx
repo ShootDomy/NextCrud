@@ -3,8 +3,6 @@ import { Button } from "./ui/button";
 import { HomeIcon, LogInIcon, LogOutIcon, Sprout } from "lucide-react";
 import { ModeToggle } from "./ModeTaoggle";
 // import { stackServerApp } from "@/stack";
-import { getUserDetails } from "@/actions/user.acction";
-import { UserButton } from "@stackframe/stack";
 
 async function Navbar() {
   // const user = await stackServerApp.getUser();
