@@ -4,7 +4,8 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
+    // url      = env("DATABASE_URL")
+    url      = "postgresql://postgres:admin@localhost:5432/nextcrud?schema=public"
 }
 
 model Plant {
@@ -14,9 +15,9 @@ model Plant {
     categoria   String?
     stock       Int
     precio      Float
+    userId      String?
+    imagenUrl   String?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     // deletedAt DateTime @deletedAt
-    userId      String?
-    imagenUrl   String?
 }

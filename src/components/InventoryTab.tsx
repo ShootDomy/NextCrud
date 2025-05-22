@@ -12,25 +12,44 @@ import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { Combobox } from "./ui/combobox";
 import { useState } from "react";
+import { getPlants } from "@/actions/plant.action";
 
-const plantas = [
-  {
-    id: "afdasff",
-    nombre: "Hola",
-    categoria: "PLanta",
-    price: 12.5,
-    stock: 2,
-  },
-];
+// const plantas = [
+//   {
+//     id: "afdasff",
+//     nombre: "Hola",
+//     categoria: "PLanta",
+//     price: 12.5,
+//     stock: 2,
+//   },
+// ];
 
-export default function InventoryTab() {
+type Planta = Awaited<ReturnType<typeof getPlants>>;
+
+interface InventoryTabProps {
+  plantas: Planta;
+}
+
+export default function InventoryTab({ plantas }: InventoryTabProps) {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filterPlants = plantas?.filter(
+    (plant) =>
+      plant.nombre.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategory === "" || plant.categoria === selectedCategory)
+  );
 
   return (
     <div className="w-full">
       <div className="flex items-center gap-2 py-2">
         <div className="relative max-w-sm w-full">
-          <Input placeholder="Buscar" className="pl-10" />
+          <Input
+            placeholder="Buscar"
+            className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
           <Search className="absolute h-4 w-4 left-3 top-1/2 transform -translate-y-1/2" />
           <Combobox
@@ -51,11 +70,11 @@ export default function InventoryTab() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {plantas.map((planta) => (
+          {filterPlants.map((planta) => (
             <TableRow key={planta.id}>
               <TableCell>{planta.nombre}</TableCell>
               <TableCell>{planta.categoria}</TableCell>
-              <TableCell>{planta.price}</TableCell>
+              <TableCell>{planta.precio}</TableCell>
               <TableCell className="font-bold">{planta.stock}</TableCell>
 
               <TableCell className="text-right">
