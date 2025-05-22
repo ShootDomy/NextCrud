@@ -12,29 +12,23 @@ import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { Combobox } from "./ui/combobox";
 import { useState } from "react";
-import { getPlants } from "@/actions/plant.action";
 
-// const plantas = [
-//   {
-//     id: "afdasff",
-//     nombre: "Hola",
-//     categoria: "PLanta",
-//     price: 12.5,
-//     stock: 2,
-//   },
-// ];
+const plantas = [
+  {
+    id: "afdasff",
+    nombre: "Hola",
+    categoria: "Planta",
+    precio: 12.5,
+    stock: 2,
+  },
+];
 
-type Planta = Awaited<ReturnType<typeof getPlants>>;
-
-interface InventoryTabProps {
-  plantas: Planta;
-}
-
-export default function InventoryTab({ plantas }: InventoryTabProps) {
+export default function InventoryTab() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filterPlants = plantas?.filter(
+  // Filtro funcional
+  const filterPlants = plantas.filter(
     (plant) =>
       plant.nombre.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (selectedCategory === "" || plant.categoria === selectedCategory)
@@ -50,7 +44,6 @@ export default function InventoryTab({ plantas }: InventoryTabProps) {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-
           <Search className="absolute h-4 w-4 left-3 top-1/2 transform -translate-y-1/2" />
           <Combobox
             value={selectedCategory}
@@ -67,20 +60,25 @@ export default function InventoryTab({ plantas }: InventoryTabProps) {
             <TableHead>Categoria</TableHead>
             <TableHead className="text-right">Precio</TableHead>
             <TableHead>Stock</TableHead>
+            <TableHead className="text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {filterPlants.map((planta) => (
             <TableRow key={planta.id}>
+              <TableCell>{planta.id}</TableCell>
               <TableCell>{planta.nombre}</TableCell>
               <TableCell>{planta.categoria}</TableCell>
-              <TableCell>{planta.precio}</TableCell>
-              <TableCell className="font-bold">{planta.stock}</TableCell>
-
+              <TableCell className="text-right">{planta.precio}</TableCell>
+              <TableCell>{planta.stock}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end space-x-4">
-                  <h1>Editar</h1>
-                  <h1>Eliminar</h1>
+                  <button className="text-blue-600 hover:underline">
+                    Editar
+                  </button>
+                  <button className="text-red-600 hover:underline">
+                    Eliminar
+                  </button>
                 </div>
               </TableCell>
             </TableRow>

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type AuthMode = "login" | "register";
 
@@ -10,6 +11,8 @@ const AuthForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [mensaje, setMensaje] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +26,8 @@ const AuthForm: React.FC = () => {
       });
 
       if (res?.ok) {
-        alert("Inicio de sesión exitoso");
+        router.push("/plants");
+        // alert("Inicio de sesión exitoso");
       } else {
         setMensaje("Credenciales incorrectas");
       }

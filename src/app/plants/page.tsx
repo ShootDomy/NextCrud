@@ -1,14 +1,15 @@
+"use client";
+import AuthForm from "@/components/AuthForm";
 import InventoryTab from "@/components/InventoryTab";
-import { stackServerApp } from "@/stack";
-import { SignUp } from "@stackframe/stack";
+import { useSession } from "next-auth/react";
 import React from "react";
 
-async function page() {
-  const user = await stackServerApp.getUser();
-  // const plants = await getPlants();
+function Page() {
+  const { data: session } = useSession();
+
   return (
     <>
-      {user ? (
+      {session?.user ? (
         <div className="mt-7 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-10 gap-6">
           <div className="lg:col-span-full">
             <InventoryTab />
@@ -17,11 +18,11 @@ async function page() {
       ) : (
         <div className="flex justify-center mt-20 items-center">
           {" "}
-          <SignUp />
+          <AuthForm />
         </div>
       )}
     </>
   );
 }
 
-export default page;
+export default Page;
